@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="css/styles.css">
+  
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración</h1>
+	 <div id="nav-toggle">&#9776;</div> <!-- Icono de hamburguesa -->
+  </header>
+<nav>
+    <ul>
+        <li ><a class="headeres"  href="Admin.html">Bienvenido</a></li>
+        <li class="dropdown">
+            <a class="headeres" >Usuarios</a>
+            <ul class="dropdown-content">
+                <li><a href="ver_usuarios.html">Ver Usuarios</a></li>
+                <li><a href="editar_usuarios.html">Editar Usuarios</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+		<a class="headeres"  >Productos</a>
+		<ul class="dropdown-content">
+                <li><a href="ver_Productos.html">Ver Productos</a></li>
+                <li><a href="editar_Productos.html">Editar Productos</a></li>
+            </ul>
+		</li>
+     
+    </ul>
+</nav>
+  <main>
+    <section id="bienvenido">
+      <h2>Bienvenido al Panel de Administración</h2>
+      <p>¡Hola, Administrador! Bienvenido a tu panel de administración. Aquí puedes gestionar usuarios, productos, ventas y proveedores.</p>
+    </section>
+    <section id="usuarios">
+      <h2>Productos</h2>
+      
+		
+  <div id="tablaUsuarios" style="display: none;"></div> <!-- Aquí se mostrará la tabla de productos -->
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function()  {
+      fetch('/productos')
+        .then(response => response.json())
+        .then(data => {
+          let tablaUsuarios = document.getElementById('tablaUsuarios');
+          tablaUsuarios.style.display = 'block';
+
+          let table = '<table border="1"><tr><th>ID</th><th>Nombre de producto</th><th>Precio</th><th>Presentacion</th><th>Proveedor</th><th>Imagen</th></tr>';
+          data.forEach(fila => {
+            table += `<tr>
+                        <td>${fila.id}</td>
+                        <td>${fila.nombre_producto}</td>
+                        <td>${fila.precio}</td>
+                        <td>${fila.presentacion}</td>
+                        <td>${fila.proveedor}</td>
+                        <td>${fila.imagen}</td>
+                      </tr>`;
+          });
+          table += '</table>';
+          tablaUsuarios.innerHTML = table;
+
+          document.getElementById("toggleTable").style.display = "none";
+          document.getElementById("hideTable").style.display = "inline-block";
+        })
+        .catch(error => console.error('Error al obtener los productos:', error));
+    });
+
+    document.getElementById("hideTable").addEventListener("click", function() {
+      document.getElementById("tablaUsuarios").style.display = "none";
+      document.getElementById("toggleTable").style.display = "inline-block";
+      document.getElementById("hideTable").style.display = "none";
+    });
+
+    // Aquí puedes agregar la lógica de búsqueda dinámica si es necesario
+  </script>
+  </section>
+    </main>
+	<script src="assets/js/nav.js"></script>
+</body>
+</html>

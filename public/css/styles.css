@@ -1,0 +1,225 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+}
+
+nav {
+  background-color: #444;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline-block;
+  position: relative; /* Añadido para dropdown */
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+nav ul li a.headeres:hover {
+  background-color: #555;
+}
+
+nav ul li ul.dropdown-content {
+  display: none; /* Ocultar por defecto */
+  position: absolute; /* Posicionamiento absoluto para el dropdown */
+  background-color: #444;
+  min-width: 160px;
+  z-index: 1;
+}
+
+nav ul li ul.dropdown-content li {
+  display: block;
+}
+
+nav ul li ul.dropdown-content li a {
+  padding: 10px 20px;
+}
+
+nav ul li ul.dropdown-content li a:hover {
+  padding: 1px 1px;
+  background-color: #555;
+}
+
+/* Mostrar subopciones al hacer hover */
+nav ul li:hover ul.dropdown-content {
+  display: block;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+table th, table td {
+  padding: 12px 15px;
+}
+
+table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Estilos para el formulario */
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: 90%; /* Ajustado para teléfonos */
+  margin: 0 auto;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select {
+  width: calc(100% - 20px); /* Ajustado para teléfonos */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form input[type="submit"] {
+  background-color: #009879;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+  background-color: #007f67;
+}
+
+/* Estilos para la lista de sugerencias */
+#sugerencias {
+  border: 1px solid #ccc;
+  max-height: 100px;
+  overflow-y: auto;
+  display: none;
+  background-color: #fff;
+  position: absolute;
+  width: calc(100% - 22px); /* Ajusta según el padding del input */
+  z-index: 1;
+}
+
+.sugerencia-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.sugerencia-item:hover {
+  background-color: #ddd;
+}
+
+
+/* Agrega estilos adicionales solo para pantallas pequeñas */
+@media only screen and (max-width: 668px) {
+  nav ul {
+    display: none; /* Oculta el menú por defecto en pantallas pequeñas */
+    flex-direction: column; /* Alinea los elementos verticalmente */
+    align-items: center; /* Centra los elementos */
+    position: absolute; /* Posición absoluta para que aparezca encima del contenido */
+    top: 60px; /* Ajusta según la altura del header */
+    left: 0; /* Alinear con el borde izquierdo */
+    width: 100%; /* Ocupa todo el ancho */
+    background-color: #444; /* Color de fondo del menú */
+  }
+
+  nav ul li {
+    width: 100%; /* Ocupa todo el ancho */
+  }
+
+  #nav-toggle {
+    display: block; /* Asegura que el icono sea visible */
+    color: #fff; /* Color del icono */
+    font-size: 20px; /* Tamaño del icono */
+    text-align: right; /* Alinea el icono a la derecha */
+    padding: 10px; /* Espacio alrededor del icono */
+    cursor: pointer; /* Cursor al pasar por encima */
+  }
+}
+
+/* Agrega estilos para mostrar el menú en pantallas pequeñas */
+nav ul.show {
+  display: flex !important; /* Mostrar el menú */
+}
+
+/* Estilos para el botón de hamburguesa en pantallas pequeñas */
+#nav-toggle {
+  display: block; /* Mostrar el botón por defecto */
+}
+
+/* Ocultar el botón en pantallas grandes */
+@media screen and (min-width: 668px) and (min-height: 835px) {
+  #nav-toggle {
+    display: none; /* Ocultar el botón en pantallas grandes */
+  }
+}

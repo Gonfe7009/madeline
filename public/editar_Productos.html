@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración</h1>
+	 <div id="nav-toggle">&#9776;</div> <!-- Icono de hamburguesa -->
+  </header>
+  <nav>
+    <ul>
+      <li><a class="headeres" href="Admin.html">Bienvenido</a></li>
+      <li class="dropdown">
+        <a class="headeres">Usuarios</a>
+        <ul class="dropdown-content">
+          <li><a href="ver_usuarios.html">Ver Usuarios</a></li>
+          <li><a href="editar_usuarios.html">Editar Usuarios</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a class="headeres">Productos</a>
+        <ul class="dropdown-content">
+          <li><a href="ver_Productos.html">Ver Productos</a></li>
+          <li><a href="editar_Productos.html">Editar Productos</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <main>
+    <section id="bienvenido">
+      <h2>Bienvenido al Panel de Administración</h2>
+      <p>¡Hola, Administrador! Bienvenido a tu panel de administración. Aquí puedes gestionar usuarios, productos, ventas y proveedores.</p>
+    </section>
+    <section id="usuarios">
+      <h2>Productos</h2>
+      <input type="text" id="buscarProducto" placeholder="Buscar producto por nombre">
+      <div id="sugerencias"></div>
+      <form action="/guardar_producto" method="POST" id="formulario">
+        <input type="hidden" id="idProducto" name="idProducto">
+        <label for="nombreProducto">Nombre del Producto:</label>
+        <input type="text" id="nombreProducto" name="nombreProducto" required><br>
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca" required><br>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea><br>
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" required><br>
+        <label for="precio">Precio:</label>
+        <input type="text" id="precio" name="precio" required><br>
+        <label for="talla">Talla:</label>
+        <input type="text" id="talla" name="talla" required><br>
+        <label for="presentacion">Presentación:</label>
+        <input type="text" id="presentacion" name="presentacion" required><br>
+        <label for="especificaciones">Especificaciones:</label>
+        <textarea id="especificaciones" name="especificaciones" required></textarea><br>
+        <select id="delete" name="delete" required>
+          <option value="vacio">.</option>
+          <option value="Eliminar">Eliminar</option>
+        </select>
+        <input type="submit" value="Guardar">
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("buscarProducto").addEventListener("input", function() {
+      var termino = this.value;
+
+      if (termino.length > 0) {
+        fetch(`/buscar_productos?termino=${termino}`)
+          .then(response => response.json())
+          .then(data => {
+            var sugerenciasDiv = document.getElementById("sugerencias");
+            sugerenciasDiv.innerHTML = "";
+
+            data.forEach(function(producto) {
+              var div = document.createElement("div");
+              div.classList.add("sugerencia-item");
+              div.textContent = producto.nombre_producto;
+              div.addEventListener("click", function() {
+                fetch(`/obtener_producto?id=${producto.id}`)
+                  .then(response => response.json())
+                  .then(data => {
+                    document.getElementById("idProducto").value = data.id;
+                    document.getElementById("nombreProducto").value = data.nombre_producto;
+                    document.getElementById("marca").value = data.marca;
+                    document.getElementById("descripcion").value = data.descripcion;
+                    document.getElementById("color").value = data.color;
+                    document.getElementById("precio").value = data.precio;
+                    document.getElementById("talla").value = data.talla;
+                    document.getElementById("presentacion").value = data.presentacion;
+                    document.getElementById("especificaciones").value = data.especificaciones;
+                  })
+                  .catch(error => console.error('Error al obtener producto:', error));
+                sugerenciasDiv.innerHTML = "";
+                sugerenciasDiv.style.display = "none";
+              });
+              sugerenciasDiv.appendChild(div);
+            });
+
+            sugerenciasDiv.style.display = "block";
+          })
+          .catch(error => console.error('Error al buscar productos:', error));
+      } else {
+        document.getElementById("sugerencias").style.display = "none";
+      }
+    });
+  </script>
+  <script src="assets/js/nav.js"></script>
+</body>
+</html>

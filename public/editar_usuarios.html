@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="css/styles.css">
+  
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración</h1>
+	 <div id="nav-toggle">&#9776;</div> <!-- Icono de hamburguesa -->
+  </header>
+  <nav>
+    <ul>
+      <li><a class="headeres" href="Admin.html">Bienvenido</a></li>
+      <li class="dropdown">
+        <a class="headeres">Usuarios</a>
+        <ul class="dropdown-content">
+          <li><a href="ver_usuarios.html">Ver Usuarios</a></li>
+          <li><a href="editar_usuarios.html">Editar Usuarios</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a class="headeres">Productos</a>
+        <ul class="dropdown-content">
+          <li><a href="ver_Productos.html">Ver Productos</a></li>
+          <li><a href="editar_Productos.html">Editar Productos</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <main>
+    <section id="bienvenido">
+      <h2>Bienvenido al Panel de Administración</h2>
+      <p>¡Hola, Administrador! Bienvenido a tu panel de administración. Aquí puedes gestionar usuarios, productos, ventas y proveedores.</p>
+    </section>
+    <section id="usuarios">
+      <h2>Usuarios</h2>
+      <input type="text" id="buscarUsuario" placeholder="Buscar usuario por nombre">
+      <div id="sugerencias"></div>
+      <form action="/guardar_usuario" method="POST" id="formulario">
+        <input type="hidden" id="idUsuario" name="idUsuario">
+        <label for="nombreUsuario">Nombre de Usuario:</label>
+        <input type="text" id="nombreUsuario" name="nombreUsuario" required><br>
+        <label for="telefono">Número de Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="contraseña">Contraseña:</label>
+        <input type="text" id="contraseña" name="contraseña" required><br>
+        <label for="tipoUsuario">Tipo de Usuario:</label>
+        <select id="tipoUsuario" name="tipoUsuario" required>
+          <option value="admin">Admin</option>
+          <option value="gerente">Gerente</option>
+          <option value="trabajador">Trabajador</option>
+          <option value="cliente">Cliente</option>
+        </select><br>
+        <select id="delete" name="delete" required>
+          <option value="vacio">.</option>
+          <option value="Eliminar">Eliminar</option>
+        </select>
+        <input type="submit" value="Guardar">
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("buscarUsuario").addEventListener("input", function() {
+      var termino = this.value;
+
+      if (termino.length > 0) {
+        fetch(`/buscar_usuarios?termino=${termino}`)
+          .then(response => response.json())
+          .then(data => {
+            var sugerenciasDiv = document.getElementById("sugerencias");
+            sugerenciasDiv.innerHTML = "";
+
+            data.forEach(function(usuario) {
+              var div = document.createElement("div");
+              div.classList.add("sugerencia-item");
+              div.textContent = usuario.nombre_usuario;
+              div.addEventListener("click", function() {
+                fetch(`/obtener_usuario?id=${usuario.id}`)
+                  .then(response => response.json())
+                  .then(data => {
+                    document.getElementById("idUsuario").value = data.id;
+                    document.getElementById("nombreUsuario").value = data.nombre_usuario;
+                    document.getElementById("telefono").value = data.numero_telefono;
+                    document.getElementById("email").value = data.email;
+                    document.getElementById("contraseña").value = data.contraseña;
+                    document.getElementById("tipoUsuario").value = data.tipo_usuario;
+                  })
+                  .catch(error => console.error('Error al obtener usuario:', error));
+                sugerenciasDiv.innerHTML = "";
+                sugerenciasDiv.style.display = "none";
+              });
+              sugerenciasDiv.appendChild(div);
+            });
+
+            sugerenciasDiv.style.display = "block";
+          })
+          .catch(error => console.error('Error al buscar usuarios:', error));
+      } else {
+        document.getElementById("sugerencias").style.display = "none";
+      }
+    });
+  </script>
+  <script src="assets/js/nav.js"></script>
+</body>
+</html>
